@@ -31,19 +31,21 @@ server <- function(input, output) {
     validate(
       need(input$file1$datapath, 'Please upload first a gff v3 file.')
     )
-    df <- read.delim(input$file1$datapath, header = T, col.names = c("Sequence", "Source", "Feature", "Start", "End", "Score", "Strand", "Phase", "Attributes"), comment.char="#")
-    DT::datatable(df)
-    return(df)
+    dfram <- read.delim(input$file1$datapath, header = T, col.names = c("Sequence", "Source", "Feature", "Start", "End", "Score", "Strand", "Phase", "Attributes"), comment.char="#")
+    DT::datatable(dfram)
   })
 
   # Print summary of gff file.
   output$mytable2 <- renderPrint({
-    summary(df)
+    dfram <- read.delim(input$file1$datapath, header = T, col.names = c("Sequence", "Source", "Feature", "Start", "End", "Score", "Strand", "Phase", "Attributes"), comment.char="#")
+    summary(dfram)
   })
   
   # Print a plot.
   output$mytable3 <- renderPlot({
-    ct <- count(df$Source)
+    dfram <- read.delim(input$file1$datapath, header = T, col.names = c("Sequence", "Source", "Feature", "Start", "End", "Score", "Strand", "Phase", "Attributes"), comment.char="#")
+    
+    ct <- count(dfram$Source)
     tot <- sum(ct$freq)
     prop <- sprintf("%.1f%%", ct$freq / tot * 100)
     
@@ -66,7 +68,9 @@ server <- function(input, output) {
   
   # Print a plot.
   output$mytable4 <- renderPlot({
-    ct <- count(df$Source)
+    dfram <- read.delim(input$file1$datapath, header = T, col.names = c("Sequence", "Source", "Feature", "Start", "End", "Score", "Strand", "Phase", "Attributes"), comment.char="#")
+    
+    ct <- count(dfram$Source)
     
     plot2 <- ggplot(ct, aes(fill=ct$x, y=ct$freq, x="test")) + 
       geom_bar(position="fill", stat="identity")
